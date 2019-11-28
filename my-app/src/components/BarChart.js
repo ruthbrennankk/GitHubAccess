@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { scaleLinear } from 'd3-scale'
 import { max } from 'd3-array'
 import { select } from 'd3-selection'
+
 class BarChart extends Component {
    constructor(props){
       super(props)
@@ -19,6 +20,7 @@ class BarChart extends Component {
       const yScale = scaleLinear()
          .domain([0, dataMax])
          .range([0, this.props.size[1]])
+         
    select(node)
       .selectAll('rect')
       .data(this.props.data)

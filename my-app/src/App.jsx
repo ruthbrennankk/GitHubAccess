@@ -6,6 +6,9 @@ import ProfileDetails from './components/ProfileDetails.jsx';
 import LanguageList from './components/LanguageList.jsx';
 import lda from './lda';
 import BarChart from './components/BarChart'
+import BubbleChart from './components/BubbleChart'
+import * as d3 from "d3";
+
 
 class App extends Component {
   constructor() {
@@ -27,7 +30,7 @@ handleUserFormSubmit(event) {
     event.preventDefault();
     axios.get('https://api.github.com/users/'+this.state.formData.username+'/repos')
     .then(response => this.setState({
-      //gitun: response.data.login,
+      gitun: this.state.formData.username,
       info : JSON.stringify(response.data,undefined, 2),
       info2 : response.data
     })).catch((err) => { console.log(err); });
@@ -52,6 +55,26 @@ drawBarChart = () => {
     )
   }
 };
+
+
+drawBubbleChart = () => {
+  if (this.state.ready) {
+    return (
+      <div>
+         <BubbleChart data={this.getDataObject()}/>
+      </div>
+    )
+  }
+};
+
+getDataObject() {
+  console.log(this.state.info2.length);
+  var objects = [];
+  for (var i=0; i<this.state.info2.length;i++) {
+      objects[i] = {forks_count:this.state.info2[i].forks_count, size:this.state.info2[i].size};
+  }
+  return objects;
+}
 
 //Forks of repos
 getForksArray = () => {
@@ -114,17 +137,24 @@ render() {
           handleFormChange={this.handleFormChange}
         />
         <p><b>Username:</b></p>
-        
-        <b>Information:</b>
-          <pre>{this.state.info}</pre>
+        <p>{this.state.gitun}</p>
         <div className='App'>
-          {this.drawBarChart()}
+          {this.drawBubbleChart()}
         </div>
         
-</div>
+        
+      </div>
     );
   }
 }
 export default App;
 
-////<p>{this.state.gitun}</p>
+/*
+<b>Information:</b>
+<pre>{this.state.info}</pre>
+
+<div className='App'>
+  {this.drawBarChart()}
+</div>
+
+*/
