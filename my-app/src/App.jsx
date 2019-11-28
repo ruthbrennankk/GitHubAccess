@@ -43,18 +43,6 @@ handleFormChange(event) {
     this.setState(obj);
   };
 
-  dragstarted = (d) => {
-    BubbleChart.dragstarted(d);
-  }
-
-  dragged = (d) => {
-    BubbleChart.dragged(d);
-  }
-
-  dragended = (d) => {
-    BubbleChart.dragended(d);
-  }
-
 drawBarChart = () => {
   if (this.state.ready) {
     return (
@@ -80,12 +68,16 @@ drawBubbleChart = () => {
 };
 
 getDataObject() {
-  console.log(this.state.info2.length);
   var objects = [];
+  var lang = [];
+  var maxSize = 0;
   for (var i=0; i<this.state.info2.length;i++) {
-      objects[i] = {forks_count:this.state.info2[i].forks_count, size:this.state.info2[i].size};
+    if ( !lang.includes(this.state.info2[i].language) ) lang.push(this.state.info2[i].language);
+    if ( this.state.info2[i].size > maxSize  ) maxSize = this.state.info2[i].size;
+      objects[i] = {group: this.state.info2[i].language , name: this.state.info2[i].name , size: this.state.info2[i].size };
+      console.log(objects[i]);
   }
-  return objects;
+  return [objects, lang, maxSize];
 }
 
 //Forks of repos
@@ -129,6 +121,24 @@ getIssuesArray = () => {
   return arr;
 };
 
+getLanguagesArray = () => {
+  var arr = [];
+  for (var i=0; i<this.state.info2.length;i++) {
+      if ( !arr.includes(this.state.info2[i].language) )
+        arr.push(this.state.info2[i].open_issues_count);
+  }
+  return arr;
+};
+
+getNamesArray = () => {
+  var arr = [];
+  for (var i=0; i<this.state.info2.length;i++) {
+    arr[i] = this.state.info2[i].name;
+  }
+  return arr;
+};
+
+
 
 //contributors
 //  "https://api.github.com/repos/ruthbrennankk/Software-Engineering-Essay/contributors"
@@ -162,11 +172,13 @@ render() {
 export default App;
 
 /*
-<b>Information:</b>
-<pre>{this.state.info}</pre>
+
 
 <div className='App'>
   {this.drawBarChart()}
 </div>
+
+<b>Information:</b>
+        <pre>{this.state.info}</pre>
 
 */
