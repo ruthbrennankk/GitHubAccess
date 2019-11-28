@@ -43,6 +43,18 @@ handleFormChange(event) {
     this.setState(obj);
   };
 
+  dragstarted = (d) => {
+    BubbleChart.dragstarted(d);
+  }
+
+  dragged = (d) => {
+    BubbleChart.dragged(d);
+  }
+
+  dragended = (d) => {
+    BubbleChart.dragended(d);
+  }
+
 drawBarChart = () => {
   if (this.state.ready) {
     return (
