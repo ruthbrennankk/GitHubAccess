@@ -9,6 +9,7 @@ class BubbleChart extends Component {
                 this.dragstarted = this.dragstarted.bind(this)
                 this.dragged = this.dragged.bind(this)
                 this.dragended = this.dragended.bind(this)
+                this.getColourArray = this.getColourArray.bind(this)
                 this.simulation = '';
             }
         
@@ -34,36 +35,60 @@ class BubbleChart extends Component {
                 d.fx = null;
                 d.fy = null;
             }
+
+            getColourArray() {
+                var arr = [];
+                for (var i = 0; i < this.props.data[1].length; i++) {
+                    arr[i] = d3.rgb(i*this.props.data[1].length%255,i*this.props.data[1].length%255,i*this.props.data[1].length%255);
+                } 
+                return arr;
+            }
+
+            getScaleArray(width) {
+                var arr = [];
+                for (var i = 0; i < this.props.data[1].length; i++) {
+                    arr[i] = width*i/this.props.data[1].length;
+                } 
+                return arr;
+            }
         
             createBubbleChart() {
                 const node = this.node;
+
+                d3.select(node)
+                    .selectAll("circle")
+                    .data(this.props.data)
+                    .enter()
+                    .append("circle")
+                
+                d3.select(node)
+                    .selectAll("circle")
+                    .data(this.props.data)
+                    .exit()
+                    .remove()
+
                 // set the dimensions and margins of the graph
-                var width = 450
-                var height = 450
+                var width = 1000
+                var height = 500
                 var maxSize = this.props.data[2]
 
                 // append the svg object to the body of the page
                 var svg = d3.select(node)
                 .append("svg")
-                    .attr("width", 450)
-                    .attr("height", 450)
-
-/*
-                // create dummy data -> just one element per circle
-                var data = [{ "name": "A", "group": 1 }, { "name": "B", "group": 1 }, { "name": "C", "group": 1 }, { "name": "D", "group": 1 }, { "name": "E", "group": 1 }, { "name": "F", "group": 1 },
-                            { "name": "G", "group": 2 }, { "name": "H", "group": 2 }, { "name": "I", "group": 2 }, { "name": "J", "group": 2 }, { "name": "K", "group": 2 }, { "name": "L", "group": 2 },
-                            { "name": "M", "group": 3 }, { "name": "N", "group": 3 }, { "name": "O", "group": 3 }]
-*/
+                    .attr("width", width)
+                    .attr("height", height)
 
                 // A scale that gives a X target position for each group
                 var x = d3.scaleOrdinal()
                 .domain(this.props.data[1])
-                .range([50, 200, 340])
+                .range(this.getScaleArray(width));
+                //.range([50, 200, 340])
 
                 // A color scale
                 var color = d3.scaleOrdinal()
                 .domain(this.props.data[1])
-                .range([ "#F8766D", "#00BA38", "#619CFF"])
+                .range(this.getColourArray());
+                //.range([ "#F8766D", "#00BA38", "#619CFF"])
 
                 // Initialize the circle: all located at the center of the svg area
                 var nodet = svg.append("g")
@@ -105,7 +130,7 @@ class BubbleChart extends Component {
             }
         
             render() {
-                return <svg ref={node => this.node = node} width={500} height={500}/>
+                return <svg ref={node => this.node = node} width={1000} height={500}/>
             }
         }
         export default BubbleChart;
