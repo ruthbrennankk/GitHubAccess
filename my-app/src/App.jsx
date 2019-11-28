@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Form from './components/Form.jsx';
-import Button from './components/Button.jsx';
+import {DrawButtons, getType} from './components/drawButtons.jsx';
 import DrawBubbleChart from './components/drawBubbleChart.jsx'
 
 var GitHub = require('github-api');
@@ -31,8 +31,6 @@ class App extends Component {
     this.handleUserFormSubmit = this.handleUserFormSubmit.bind(this);
     this.handleFormChange= this.handleFormChange.bind(this);
     this.handleClick = this.handleClick.bind(this)
-    this.getName = this.getName.bind(this)
-    this.getType = this.getType.bind(this)
   };
 
   handleUserFormSubmit(event) {
@@ -89,53 +87,6 @@ class App extends Component {
     }
   };
 
-  getName(no) {
-    var r=null;
-    switch(no) {
-      case 0:
-        if (!this.state.buttons.stars) r = 'stars'
-        else r = 'size'
-        break;
-      case 1:
-        if (!this.state.buttons.stars && !this.state.buttons.size) r = 'size'
-        else r = 'issues'
-        break;
-      case 2:
-        if (!this.state.buttons.stars && !this.state.buttons.size && !this.state.buttons.issues) r = 'issues'
-        else r = 'forks'
-        break;
-    }
-      return r;
-  };
-
-  getType() {
-    if (this.state.buttons.stars) return 'stars'
-    else if (this.state.buttons.forks) return 'forks'
-    else if (this.state.buttons.issues) return 'issues'
-    else return 'size'
-  };
-
-  drawButtons() {
-    if (this.state.ready) {
-      return (
-        <div>
-          <Button
-            handleClick={this.handleClick}
-            name={this.getName(0)}
-          />
-          <Button
-              handleClick={this.handleClick}
-              name={this.getName(1)}
-          />
-          <Button
-              handleClick={this.handleClick}
-              name={this.getName(2)}
-          />
-        </div> 
-      )
-    }
-  }
-
 
   render() {
     return (
@@ -155,9 +106,12 @@ class App extends Component {
         <p>{this.state.gitun}</p>
         <DrawBubbleChart
           state = {this.state}
-          type = {this.getType()}
+          type = {getType({state: this.state})}
         />
-        {this.drawButtons()}
+        <DrawButtons
+            handleClick = {this.handleClick}
+            state = {this.state}
+        />
       </div>
     );
   };
