@@ -1,13 +1,14 @@
 import React from 'react';
 import BubbleChart from './BubbleChart.jsx'
 
-const DrawBubbleChart = (props, type) => {
+const DrawBubbleChart = (props) => {
     if (props.state.ready) {
         var objects = [];
         var lang = [];
         var max = 0;
         
-        switch(type) {
+        console.log(props.type);
+        switch(props.type) {
           case 'stars':
             // number of times the repo has been starred
             for (var i=0; i<props.state.info.length;i++) {
