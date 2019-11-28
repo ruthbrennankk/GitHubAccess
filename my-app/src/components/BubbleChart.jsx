@@ -53,7 +53,7 @@ class BubbleChart extends Component {
                 // Initialize the circle: all located at the center of the svg area
                 var nodet = svg.append("g")
                 .selectAll("circle")
-                .data(data)
+                .data(this.props.data)
                 .enter()
                 .append("circle")
                     .attr("r", 25)
@@ -77,7 +77,7 @@ class BubbleChart extends Component {
                 // Apply these forces to the nodes and update their positions.
                 // Once the force algorithm is happy with positions ('alpha' value is low enough), simulations will stop.
                 this.simulation
-                    .nodes(data)
+                    .nodes(this.props.data)
                     .on("tick", function(d){
                     nodet
                         .attr("cx", function(d){ return d.x; })
