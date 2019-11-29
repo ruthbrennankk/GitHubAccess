@@ -21,7 +21,7 @@ class App extends Component {
       gh : new GitHub({
             // ------- Enter your own OAuth Token to proceed -------
             //token: 'OAuth Code Here'
-            token: '996c6be1b191dbe8a8443e266dcbd98328f486a9'
+            token: 'cc04b987fc5db7f4d94746a7365309ec8d783b6b'
       }),
       formData: {
         username: '',

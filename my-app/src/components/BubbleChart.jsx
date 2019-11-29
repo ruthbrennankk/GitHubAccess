@@ -107,7 +107,12 @@ class BubbleChart extends Component {
                         .style("position", "absolute")
                         .style("z-index", "10")
                         .style("visibility", "hidden")
-                        .text("a simple tooltip");
+                        .style("background-color", "white")
+                        .style("border", "solid")
+                        .style("border-width", "2px")
+                        .style("border-radius", "5px")
+                        .style("padding", "5px")
+                        //.text("a simple tooltip");
 
 
                 // Initialize the circle: all located at the center of the svg area
@@ -126,9 +131,24 @@ class BubbleChart extends Component {
                     // -3- Trigger the functions
                     //.on("mouseover", this.callShow)
                    // .on("mouseleave", this.callHide)
-                   .on("mouseover", function(){return tooltip.style("visibility", "visible");})
-                   .on("mousemove", function(){return tooltip.style("top", (height-10)+"px").style("left",(height+10)+"px");})
-                   .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
+                   .on("mouseover", function(d){console.log(d); return tooltip.style("visibility", "visible");})
+                   .on("mousemove", function(d){console.log(d);
+                                                    var language = 'multi';
+                                                    var mouseZero = d3.mouse(this)[0];
+                                                    var mouseOne = d3.mouse(this)[1];
+                                                    if (d.group!=null) {
+                                                        language = d.group;
+                                                    }
+                                                    if (mouseZero<300) {
+                                                        mouseZero = 300;
+                                                    } else if (mouseZero>600) {
+                                                        mouseZero/=2;
+                                                    }
+                                                    console.log(mouseZero)
+                                                    return tooltip.html('<u>' + d.name + '</u>' + "<br>" + language + "<br>" + d.type + ": " + d.size)
+                                                                            .style("left", (mouseOne) + "px")
+                                                                            .style("top", (mouseZero) + "px");})
+                   .on("mouseout", function(d){console.log(d);return tooltip.style("visibility", "hidden");})
                     .call(d3.drag() // call specific function when circle is dragged
                         .on("start", this.dragstarted)
                         .on("drag", this.dragged)

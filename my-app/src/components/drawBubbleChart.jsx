@@ -14,7 +14,7 @@ const DrawBubbleChart = (props) => {
             for (var i=0; i<props.state.info.length;i++) {
               if ( !lang.includes(props.state.info[i].language) ) lang.push(props.state.info[i].language);
               if (props.state.info[i].stargazers_count > max) max = props.state.info[i].stargazers_count;
-                objects[i] = {group: props.state.info[i].language , name: props.state.info[i].name , size: props.state.info[i].stargazers_count};
+                objects[i] = {group: props.state.info[i].language , name: props.state.info[i].name , size: props.state.info[i].stargazers_count, type: 'Stars Count'};
             }
             break;
           case 'forks':
@@ -22,7 +22,7 @@ const DrawBubbleChart = (props) => {
             for (var i=0; i<props.state.info.length;i++) {
               if ( !lang.includes(props.state.info[i].language) ) lang.push(props.state.info[i].language);
               if (props.state.info[i].forks_count > max) max = props.state.info[i].forks_count;
-                objects[i] = {group: props.state.info[i].language , name: props.state.info[i].name , size: props.state.info[i].forks_count};
+                objects[i] = {group: props.state.info[i].language , name: props.state.info[i].name , size: props.state.info[i].forks_count, type: 'Forks Count'};
             }
             break;
           case 'issues':
@@ -30,7 +30,7 @@ const DrawBubbleChart = (props) => {
             for (var i=0; i<props.state.info.length;i++) {
               if ( !lang.includes(props.state.info[i].language) ) lang.push(props.state.info[i].language);
               if (props.state.info[i].open_issues_count > max) max = props.state.info[i].open_issues_count;
-                objects[i] = {group: props.state.info[i].language , name: props.state.info[i].name , size: props.state.info[i].open_issues_count};
+                objects[i] = {group: props.state.info[i].language , name: props.state.info[i].name , size: props.state.info[i].open_issues_count, type: 'Open Issues Count'};
             }
             break;
           default:
@@ -38,14 +38,12 @@ const DrawBubbleChart = (props) => {
             for (var i=0; i<props.state.info.length;i++) {
               if ( !lang.includes(props.state.info[i].language) ) lang.push(props.state.info[i].language);
               if (props.state.info[i].size > max) max = props.state.info[i].size;
-                objects[i] = {group: props.state.info[i].language , name: props.state.info[i].name , size: props.state.info[i].size};
+                objects[i] = {group: props.state.info[i].language , name: props.state.info[i].name , size: props.state.info[i].size, type: 'size'};
             }
         }
         console.log("draw BC " + props.state.type)
         return (
             <div>
-                <p>Repositotry: {objects[0].name}</p>
-                <p>{props.type}: {'value'}</p>
                 <BubbleChart data={[objects, lang, max, props.type]} />
             </div>
         )
