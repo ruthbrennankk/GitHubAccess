@@ -41,9 +41,10 @@ const DrawBubbleChart = (props) => {
                 objects[i] = {group: props.state.info[i].language , name: props.state.info[i].name , size: props.state.info[i].size, type: 'size'};
             }
         }
+        console.log("draw BC " + props.state.type)
         return (
             <div>
-                <BubbleChart data={[objects, lang, max]} />
+                <BubbleChart data={[objects, lang, max, props.type]}  lang={props.state.languages}/>
             </div>
         )
     } else {

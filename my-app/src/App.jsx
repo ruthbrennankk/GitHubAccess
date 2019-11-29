@@ -1,11 +1,12 @@
+
 import React, { Component } from 'react';
 import Form from './components/Form.jsx';
 import {DrawButtons, getType} from './components/drawButtons.jsx';
-import DrawBubbleChart from './components/drawBubbleChart.jsx'
+import DrawBubbleChart from './components/drawBubbleChart.jsx';
+import Button from './components/Button.jsx';
 
 
 var GitHub = require('github-api');
-
 
 class App extends Component {
   constructor() {
@@ -15,6 +16,8 @@ class App extends Component {
       info: null,
       ready: false,
       type: 'size',
+      languages: false,
+      langButName: 'Seperate by Languages',
       // basic auth
       gh : new GitHub({
             // ------- Enter your own OAuth Token to proceed -------
@@ -34,8 +37,8 @@ class App extends Component {
     this.handleUserFormSubmit = this.handleUserFormSubmit.bind(this);
     this.handleFormChange= this.handleFormChange.bind(this);
     this.handleClick = this.handleClick.bind(this)
-    this.showDescription = this.showDescription.bind(this)
-    this.hideDecription = this.hideDecription.bind(this)
+    this.handleLangClick = this.handleLangClick.bind(this)
+    this.drawLangButton = this.drawLangButton.bind(this)
   };
 
   handleUserFormSubmit(event) {
@@ -73,18 +76,21 @@ class App extends Component {
     }
   };
 
-  showDescription(name) {
-    this.setState({ 
-      description: true,
-      value: 'name',
-    })
+  handleLangClick(name) {
+    var name = '';
+    if (!this.state.languages) {name = "Don't separate by Languages";}
+    else {name = 'Seperate by Languages';}
+    this.setState({ languages: !this.state.languages, langButName: name})
   }
 
-  hideDecription() {
-    this.setState({ 
-      description: false,
-      value: '',
-    })
+  drawLangButton() {
+    
+    if(this.state.ready) {
+      return (
+        <Button handleClick = {this.handleLangClick} name = {this.state.langButName}/>
+      )
+    }
+    return null;
   }
 
   render() {
@@ -100,12 +106,10 @@ class App extends Component {
         />
         <p><b>Username: {this.state.gitun}</b></p>
 
-        
-
+        {this.drawLangButton()}
         <DrawBubbleChart
           state = {this.state}
           type = {getType({state: this.state})}
-          showDescription = {this.showDescription}
         />
         <DrawButtons
             handleClick = {this.handleClick}
@@ -115,5 +119,5 @@ class App extends Component {
     );
   };
 }
+
 export default App;
-//<DrawInfo/>

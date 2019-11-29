@@ -127,7 +127,7 @@ class BubbleChart extends Component {
                     .style("fill", function(d){ return color(d.group)})
                     .style("fill-opacity", 0.8)
                     .attr("stroke", "black")
-                    .style("stroke-width", 4)
+                    .style("stroke-width", 1)
                    .on("mouseover", function(d){console.log(d); return tooltip.style("visibility", "visible");})
                    .on("mousemove", function(d){console.log(d);
                                                     var language = 'multi';
@@ -137,29 +137,38 @@ class BubbleChart extends Component {
                                                         language = d.group;
                                                     }
                                                     if (mouseZero<300) {
-                                                        mouseZero = 300;
+                                                       mouseZero = 300;
                                                     } else if (mouseZero>600) {
                                                         mouseZero/=2;
                                                     }
                                                     console.log(mouseZero)
-                                                    return tooltip.html('<u>' + d.name + '</u>' + "<br>" + language + "<br>" + d.type + ": " + d.size)
+                                                    return tooltip.html('<b>' +"Repository Name: " + d.name + '</b>' + "<br>" + "Language: " + language + "<br>" + d.type + ": " + d.size)
                                                                             .style("left", (mouseOne) + "px")
                                                                             .style("top", (mouseZero) + "px");})
-                   .on("mouseout", function(d){console.log(d);return tooltip.style("visibility", "hidden");})
+                    .on("mouseout", function(d){console.log(d);return tooltip.style("visibility", "hidden");})
                     .call(d3.drag() // call specific function when circle is dragged
                         .on("start", this.dragstarted)
                         .on("drag", this.dragged)
                         .on("end", this.dragended));
                      
+                    if (this.props.lang) {
+                        // Features of the forces applied to the nodes:
+                        this.simulation = d3.forceSimulation()
+                            .force("x", d3.forceX().strength(0.1).x( function(d){ return x(d.group) } ))
+                            .force("y", d3.forceY().strength(0.2).y( height/2 ))
+                            .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
+                            .force("charge", d3.forceManyBody().strength(0.5)) // Nodes are attracted one each other of value is > 0
+                            .force("collide", d3.forceCollide().strength(1).radius(function(d){var size = d.size/((maxSize.toString().length-1)*10); if (size<100 && size > 2) return size; if (size < 5) return 5;}).iterations(1)) // Force that avoids circle overlapping
 
-                // Features of the forces applied to the nodes:
-                this.simulation = d3.forceSimulation()
-                    .force("x", d3.forceX().strength(0.5).x( function(d){ return x(d.group) } ))
-                    .force("y", d3.forceY().strength(0.1).y( height/2 ))
-                    .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
-                    .force("charge", d3.forceManyBody().strength(1)) // Nodes are attracted one each other of value is > 0
-                    .force("collide", d3.forceCollide().strength(.1).radius(32).iterations(1)) // Force that avoids circle overlapping
+                    } else {
+                        // Features of the forces applied to the nodes:
+                        this.simulation = d3.forceSimulation()
+                            .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
+                            .force("charge", d3.forceManyBody().strength(0.1)) // Nodes are attracted one each other of value is > 0
+                            .force("collide", d3.forceCollide().strength(0.2).radius(function(d){var size = d.size/((maxSize.toString().length-1)*10); if (size<100 && size > 2) return size; if (size < 5) return 5;}).iterations(1)) // Force that avoids circle overlapping
 
+                    }
+                
                 // Apply these forces to the nodes and update their positions.
                 // Once the force algorithm is happy with positions ('alpha' value is low enough), simulations will stop.
                 this.simulation
