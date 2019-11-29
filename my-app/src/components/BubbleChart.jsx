@@ -117,8 +117,8 @@ class BubbleChart extends Component {
                     .style("fill-opacity", 0.8)
                     .attr("stroke", "black")
                     .style("stroke-width", 1)
-                   .on("mouseover", function(d){console.log(d); return tooltip.style("visibility", "visible");})
-                   .on("mousemove", function(d){console.log(d);
+                   .on("mouseover", function(d){return tooltip.style("visibility", "visible");})
+                   .on("mousemove", function(d){
                                                     var language = 'multi';
                                                     var mouseZero = d3.mouse(this)[0];
                                                     var mouseOne = d3.mouse(this)[1];
@@ -130,15 +130,16 @@ class BubbleChart extends Component {
                                                     } else if (mouseZero>600) {
                                                         mouseZero/=2;
                                                     }
-                                                    console.log(mouseZero)
                                                     return tooltip.html('<b>' +"Repository Name: " + d.name + '</b>' + "<br>" + "Language: " + language + "<br>" + d.type + ": " + d.size)
                                                                             .style("left", (mouseOne) + "px")
                                                                             .style("top", (mouseZero) + "px");})
-                    .on("mouseout", function(d){console.log(d);return tooltip.style("visibility", "hidden");})
+                    .on("mouseout", function(d){return tooltip.style("visibility", "hidden");})
                     .call(d3.drag() // call specific function when circle is dragged
                         .on("start", this.dragstarted)
                         .on("drag", this.dragged)
-                        .on("end", this.dragended));
+                        .on("end", this.dragended))
+                    
+                   // .on("click", function(d) { console.log(d.url); });
                      
                     if (this.props.lang) {
                         // Features of the forces applied to the nodes:
