@@ -15,11 +15,13 @@ class App extends Component {
       info: null,
       ready: false,
       type: 'size',
+      description: false,
+      value: '',
       // basic auth
       gh : new GitHub({
             // ------- Enter your own OAuth Token to proceed -------
             //token: 'OAuth Code Here'
-            token: 'ae2bfe86d8135c68bb430b1c4f8488aa040fe8fb'
+            token: '996c6be1b191dbe8a8443e266dcbd98328f486a9'
       }),
       formData: {
         username: '',
@@ -34,6 +36,8 @@ class App extends Component {
     this.handleUserFormSubmit = this.handleUserFormSubmit.bind(this);
     this.handleFormChange= this.handleFormChange.bind(this);
     this.handleClick = this.handleClick.bind(this)
+    this.showDescription = this.showDescription.bind(this)
+    this.hideDecription = this.hideDecription.bind(this)
   };
 
   handleUserFormSubmit(event) {
@@ -42,7 +46,8 @@ class App extends Component {
     user.listRepos()
     .then(response => this.setState({
       gitun: this.state.formData.username,
-      info : response.data
+      info : response.data,
+      info2 : JSON.stringify(response.data, undefined, 2)
     })).catch((err) => { console.log(err);   
     });
     this.state.ready = true;
@@ -90,6 +95,20 @@ class App extends Component {
     }
   };
 
+  showDescription(name) {
+    this.setState({ 
+      description: true,
+      value: 'name',
+    })
+  }
+
+  hideDecription() {
+    this.setState({ 
+      description: false,
+      value: '',
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -101,11 +120,14 @@ class App extends Component {
           handleUserFormSubmit={this.handleUserFormSubmit}
           handleFormChange={this.handleFormChange}
         />
-        <p><b>Username:</b></p>
-        <p>{this.state.gitun}</p>
+        <p><b>Username: {this.state.gitun}</b></p>
+
+        
+
         <DrawBubbleChart
           state = {this.state}
           type = {getType({state: this.state})}
+          showDescription = {this.showDescription}
         />
         <DrawButtons
             handleClick = {this.handleClick}
@@ -116,3 +138,4 @@ class App extends Component {
   };
 }
 export default App;
+//<DrawInfo/>

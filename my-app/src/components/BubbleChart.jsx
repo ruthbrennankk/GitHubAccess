@@ -10,16 +10,26 @@ class BubbleChart extends Component {
                 this.dragged = this.dragged.bind(this)
                 this.dragended = this.dragended.bind(this)
                 this.getColourArray = this.getColourArray.bind(this)
+                this.callHide = this.callHide.bind(this)
+                this.callShow = this.callShow.bind(this)
                 this.simulation = '';
-                this.a = 255; this.b = 0; this.c = 128;
                 
             }
         
             componentDidMount() {
                 this.createBubbleChart()
             }
+
             componentDidUpdate() {
                 this.createBubbleChart()
+            }
+
+            callShow(d) {
+                console.log("show " + d.name)
+            }
+
+            callHide(d) {
+                console.log("hide " + d.name)
             }
 
             // What happens when a circle is dragged?
@@ -91,6 +101,15 @@ class BubbleChart extends Component {
                 .domain(this.props.data[1])
                 .range(this.getColourArray());
 
+                // create a tooltip
+                var tooltip = d3.select("div")
+	                    .append("t")
+                        .style("position", "absolute")
+                        .style("z-index", "10")
+                        .style("visibility", "hidden")
+                        .text("a simple tooltip");
+
+
                 // Initialize the circle: all located at the center of the svg area
                 var nodet = svg.append("g")
                 .selectAll("circle")
@@ -105,14 +124,11 @@ class BubbleChart extends Component {
                     .attr("stroke", "black")
                     .style("stroke-width", 4)
                     // -3- Trigger the functions
-                    .on("mouseover", function(d) {
-                        
-                        console.log("mouse over");
-                    } )
-                    .on("mouseleave", function(d) {
-                        
-                        console.log("mouse leave")
-                    } )
+                    //.on("mouseover", this.callShow)
+                   // .on("mouseleave", this.callHide)
+                   .on("mouseover", function(){return tooltip.style("visibility", "visible");})
+                   .on("mousemove", function(){return tooltip.style("top", (height-10)+"px").style("left",(height+10)+"px");})
+                   .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
                     .call(d3.drag() // call specific function when circle is dragged
                         .on("start", this.dragstarted)
                         .on("drag", this.dragged)
@@ -139,7 +155,11 @@ class BubbleChart extends Component {
             }
         
             render() {
-                return <svg ref={node => this.node = node} width={1000} height={500}/>
+                return (
+                    <div>
+                        <svg ref={node => this.node = node} width={750} height={500}/>
+                    </div>
+                )
             }
         }
-        export default BubbleChart;
+export default BubbleChart;
