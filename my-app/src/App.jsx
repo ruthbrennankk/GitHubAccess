@@ -3,6 +3,7 @@ import Form from './components/Form.jsx';
 import {DrawButtons, getType} from './components/drawButtons.jsx';
 import DrawBubbleChart from './components/drawBubbleChart.jsx'
 
+
 var GitHub = require('github-api');
 
 
@@ -16,7 +17,9 @@ class App extends Component {
       type: 'size',
       // basic auth
       gh : new GitHub({
-                token: 'bffafb9b4091b77da9fd0d528dfb8d2851d3aba0'
+            // ------- Enter your own OAuth Token to proceed -------
+            //token: 'OAuth Code Here'
+            token: 'ae2bfe86d8135c68bb430b1c4f8488aa040fe8fb'
       }),
       formData: {
         username: '',
@@ -87,16 +90,12 @@ class App extends Component {
     }
   };
 
-
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">GitHub Analytics</h1>
+          <h1 className="App-title">Github Repositories Data Visualisation</h1>
         </header>
-        <p className="App-intro">
-          Watch this space...
-        </p>
         <Form
           formData={this.state.formData}
           handleUserFormSubmit={this.handleUserFormSubmit}

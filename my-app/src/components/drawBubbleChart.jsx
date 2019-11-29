@@ -2,6 +2,7 @@ import React from 'react';
 import BubbleChart from './BubbleChart.jsx'
 
 const DrawBubbleChart = (props) => {
+
     if (props.state.ready) {
         var objects = [];
         var lang = [];

@@ -3,7 +3,7 @@ const Form = (props) => {
   return (
     <form onSubmit={(event) => props.handleUserFormSubmit(event)}>
           <label>
-            <p>Search:</p>
+            <p>Enter your username in the box below:</p>
             <input name="username"
               type="text"
               placeholder="GitHub username"
