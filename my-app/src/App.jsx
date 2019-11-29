@@ -15,13 +15,11 @@ class App extends Component {
       info: null,
       ready: false,
       type: 'size',
-      description: false,
-      value: '',
       // basic auth
       gh : new GitHub({
             // ------- Enter your own OAuth Token to proceed -------
             //token: 'OAuth Code Here'
-            token: 'cc04b987fc5db7f4d94746a7365309ec8d783b6b'
+            token: '81e64c4b1e93e35e241cf11ab82968f230158f52'
       }),
       formData: {
         username: '',
@@ -62,36 +60,16 @@ class App extends Component {
   handleClick(name) {
     switch(name) {
       case 'stars':
-        this.setState({ buttons: {
-          stars: true,
-          size: false,
-          issues: false,
-          forks: false
-        }})
+        this.setState({ buttons: {stars: true,size: false,issues: false,forks: false}})
         break;
       case 'forks':
-        this.setState({ buttons: {
-            stars: false,
-            size: false,
-            issues: false,
-            forks: true
-          }})
+        this.setState({ buttons: {stars: false,size: false,issues: false,forks: true}})
         break;
       case 'issues':
-        this.setState({ buttons: {
-          stars: false,
-          size: false,
-          issues: true,
-          forks: false
-        }})
+        this.setState({ buttons: {stars: false,size: false,issues: true,forks: false}})
         break;
       default:
-        this.setState({ buttons: {
-          stars: false,
-          size: true,
-          issues: false,
-          forks: false
-        }})
+        this.setState({ buttons: {stars: false, size: true, issues: false, forks: false }})
     }
   };
 

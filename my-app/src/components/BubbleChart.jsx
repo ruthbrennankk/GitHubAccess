@@ -128,9 +128,6 @@ class BubbleChart extends Component {
                     .style("fill-opacity", 0.8)
                     .attr("stroke", "black")
                     .style("stroke-width", 4)
-                    // -3- Trigger the functions
-                    //.on("mouseover", this.callShow)
-                   // .on("mouseleave", this.callHide)
                    .on("mouseover", function(d){console.log(d); return tooltip.style("visibility", "visible");})
                    .on("mousemove", function(d){console.log(d);
                                                     var language = 'multi';
