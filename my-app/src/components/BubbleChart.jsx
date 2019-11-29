@@ -10,8 +10,6 @@ class BubbleChart extends Component {
                 this.dragged = this.dragged.bind(this)
                 this.dragended = this.dragended.bind(this)
                 this.getColourArray = this.getColourArray.bind(this)
-                this.callHide = this.callHide.bind(this)
-                this.callShow = this.callShow.bind(this)
                 this.simulation = '';
                 
             }
@@ -22,14 +20,6 @@ class BubbleChart extends Component {
 
             componentDidUpdate() {
                 this.createBubbleChart()
-            }
-
-            callShow(d) {
-                console.log("show " + d.name)
-            }
-
-            callHide(d) {
-                console.log("hide " + d.name)
             }
 
             // What happens when a circle is dragged?
@@ -46,13 +36,12 @@ class BubbleChart extends Component {
                 if (!d3.event.active) this.simulation.alphaTarget(.03);
                 d.fx = null;
                 d.fy = null;
-                console.log("dragend" + d);
             }
 
             getColourArray() {
                 var arr = [];
                 for (var i = 0; i < this.props.data[1].length; i++) {
-                    arr[i] = d3.rgb(i*224%225,0,i*983%225);
+                    arr[i] = d3.rgb(i*150%225,0,i*100%225);
                 } 
                 return arr;
             }
@@ -60,7 +49,7 @@ class BubbleChart extends Component {
             getScaleArray(width) {
                 var arr = [];
                 for (var i = 0; i < this.props.data[1].length; i++) {
-                    arr[i] = width*i/this.props.data[1].length;
+                    arr[i] = ((width-(width/5))/this.props.data[1].length)*i;
                 } 
                 return arr;
             }
@@ -81,7 +70,7 @@ class BubbleChart extends Component {
                     .remove()
 
                 // set the dimensions and margins of the graph
-                var width = 1000
+                var width = 900
                 var height = 500
                 var maxSize = this.props.data[2]
 
@@ -157,14 +146,14 @@ class BubbleChart extends Component {
                             .force("x", d3.forceX().strength(0.1).x( function(d){ return x(d.group) } ))
                             .force("y", d3.forceY().strength(0.2).y( height/2 ))
                             .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
-                            .force("charge", d3.forceManyBody().strength(0.5)) // Nodes are attracted one each other of value is > 0
-                            .force("collide", d3.forceCollide().strength(1).radius(function(d){var size = d.size/((maxSize.toString().length-1)*10); if (size<100 && size > 2) return size; if (size < 5) return 5;}).iterations(1)) // Force that avoids circle overlapping
+                            .force("charge", d3.forceManyBody().strength(1)) // Nodes are attracted one each other of value is > 0
+                            .force("collide", d3.forceCollide().strength(2).radius(function(d){var size = d.size/((maxSize.toString().length-1)*10); if (size<100 && size > 2) return size; if (size < 5) return 5;}).iterations(1)) // Force that avoids circle overlapping
 
                     } else {
                         // Features of the forces applied to the nodes:
                         this.simulation = d3.forceSimulation()
                             .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
-                            .force("charge", d3.forceManyBody().strength(0.1)) // Nodes are attracted one each other of value is > 0
+                            .force("charge", d3.forceManyBody().strength(2)) // Nodes are attracted one each other of value is > 0
                             .force("collide", d3.forceCollide().strength(0.2).radius(function(d){var size = d.size/((maxSize.toString().length-1)*10); if (size<100 && size > 2) return size; if (size < 5) return 5;}).iterations(1)) // Force that avoids circle overlapping
 
                     }
@@ -183,7 +172,7 @@ class BubbleChart extends Component {
             render() {
                 return (
                     <div>
-                        <svg ref={node => this.node = node} width={750} height={500}/>
+                        <svg ref={node => this.node = node} width={1000} height={500}/>
                     </div>
                 )
             }

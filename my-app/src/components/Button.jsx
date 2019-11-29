@@ -11,7 +11,7 @@ export default Button;
 const styles = {
   textStyle: {
     alignSelf: 'center',
-    color: '#336633',
+    color: '#3b5998',
     fontSize: 16,
     fontWeight: '600',
     paddingTop: 10,
@@ -20,7 +20,7 @@ const styles = {
   buttonStyle: {
     backgroundColor: '#fff',
     borderWidth: 1,
-    borderColor: '#fca2e7',
+    borderColor: '#3b5998',
     paddingTop: 4,
     paddingBottom: 4,
     paddingRight: 25,
